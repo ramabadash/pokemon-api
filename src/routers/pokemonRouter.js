@@ -9,6 +9,24 @@ const P = new Pokedex();
 
 //localhost:3000/pokemon 
 
+//Get pokemon collection
+router.get("/", (req, res)=> {
+    const userName = req.headers.username; //get user name
+    const usreFolderPath = path.resolve(`.\\users`, userName); //path to th user file
+    if(!fs.existsSync(usreFolderPath)) { //is user exsits
+        res.status(403).json({ message: 'UserName is not exsists'}); //user isn't exsits
+    }
+    const pokemonCollection = [];
+    const collection = fs.readdirSync(usreFolderPath); //collection files from user folder
+    for (const pokemonFile of collection) {
+        const currentFilePath = path.resolve(usreFolderPath, pokemonFile); 
+        const fileContent = fs.readFileSync(currentFilePath).toString();
+        pokemonCollection.push(fileContent); //Array with pokemon collection
+    }
+    res.send(pokemonCollection);
+})
+
+
 //Pokemon information
 router.get("/get/:id", (req, res)=> {
     const id = req.params.id;
@@ -28,7 +46,7 @@ router.put("/catch/:id", (req, res)=> {
     const userName = req.headers.username;
     const usreFolderPath = path.resolve(`.\\users`, userName);
     if(fs.existsSync(usreFolderPath)) {
-        const collection = fs.readdirSync(usreFolderPath);
+        const collection = fs.readdirSync(usreFolderPath); //all pokemon collection files
         if (collection.includes(`${id}.json`)){ //Pokemon already caught
             res.status(403).json({ message: 'Pokemon already caught'});
         }
