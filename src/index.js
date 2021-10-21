@@ -1,11 +1,12 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-
 const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
 
 const pokemonRouter = require("./routers/pokemonRouter");
+app.use(express.static('public'));
+app.use(express.json()) // parses requests as json
 
 app.use('/pokemon', pokemonRouter);
 
