@@ -39,6 +39,22 @@ router.put("/catch/:id", (req, res)=> {
     res.send(true);
 })
 
+//Delete pokemon from collection
+router.delete("/release/:id", (req, res)=> {
+    const id = req.params.id;
+    const userName = req.headers.username;
+    const usreFolderPath = path.resolve(`.\\users`, userName);
+    if(fs.existsSync(usreFolderPath)) {
+        const collection = fs.readdirSync(usreFolderPath);
+        if (collection.includes(`${id}.json`)){
+            fs.unlinkSync(`${usreFolderPath}\\${id}.json`); //Delete from collection
+            res.send(true);
+        }
+        res.status(403).json({ message: 'Pokemon is not in your collection'}); //the user exists the pokemon doesn't
+    }
+    res.status(403).json({ message: 'UserName is not exsists'});//No user No pokemon 
+})
+
 //create Poke Object from response
 function createPokeObj (pokeObj) {
     const typesArray = [];
