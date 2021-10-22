@@ -11,13 +11,13 @@ app.use(express.json()) // parses requests as json
 const pokemonRouter = require("./routers/pokemonRouter");
 const userRouter = require("./routers/userRouter");
 const {errorHandlerMiddleware} = require("./middleware/errorHandler")
+const {userHandler} = require("./middleware/userHandler");
+
+
+app.use(userHandler);
 
 app.use('/pokemon', pokemonRouter);
 app.use('/info', userRouter);
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
 app.use(errorHandlerMiddleware);
 
