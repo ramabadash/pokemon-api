@@ -25,7 +25,7 @@ router.get("/", (req, res)=> {
 
 
 //Pokemon information
-router.get("/get/:id", (req, res)=> {
+router.get("/get/:id", (req, res, next)=> {
         const id = req.params.id;
         P.getPokemonByName(id)
         .then((response) => {
@@ -33,12 +33,12 @@ router.get("/get/:id", (req, res)=> {
             return res.send(pokeObj);
         })
         .catch((error)=> {
-          throw {"status": 404, "messege": "pokemon not found"};
+            next ({"status": 404, "messege": "pokemon not found"});
         });
 })
 
 //Pokemon information by quary
-router.get("/query",  (req, res)=> {
+router.get("/query",  (req, res, next)=> {
     const pokeName = req.body.query;
     P.getPokemonByName(pokeName)
     .then((response) => {
@@ -46,7 +46,7 @@ router.get("/query",  (req, res)=> {
         return res.send(pokeObj);
     })
     .catch((error)=> {
-      throw {"status": 404, "messege": "pokemon not found"};
+        next ({"status": 404, "messege": "pokemon not found"});
     });
 })
        
