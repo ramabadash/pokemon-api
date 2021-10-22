@@ -4,8 +4,12 @@ const port = 3000;
 
 const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
+const cors = require("cors");
 
-app.use(express.static('public'));
+app.use(cors({
+    origin: "*"
+}));
+
 app.use(express.json()) // parses requests as json
 
 const pokemonRouter = require("./routers/pokemonRouter");
