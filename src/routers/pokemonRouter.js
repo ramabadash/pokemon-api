@@ -1,3 +1,4 @@
+const { throws } = require('assert');
 const express = require('express');
 const router = express.Router();
 const fs = require("fs");
@@ -23,22 +24,29 @@ router.get("/", (req, res)=> {
         const fileContent = fs.readFileSync(currentFilePath).toString();
         pokemonCollection.push(fileContent); //Array with pokemon collection
     }
-    res.send(pokemonCollection);
+    return res.send(pokemonCollection);
 })
 
 
 //Pokemon information
-router.get("/get/:id", (req, res)=> {
-    const id = req.params.id;
-    console.log("id "+ id)
-    P.getPokemonByName(id) 
-    .then((response) => {
-        const pokeObj = createPokeObj(response);
-        res.send(pokeObj);
-    })
-    .catch((error)=> {
-      res.send(`There was an ERROR: ${error}`)
-    });
+router.get("/get/:id", async (req, res)=> {
+    try {
+        const id = req.params.id;
+        const pokeData = await P.getPokemonByName(id);
+        if(!pokeData.ok()) throw {"status": 404, "messege": "pokemon not found"};
+        const pokeObj = createPokeObj(pokeData);
+        return res.send(pokeObj);
+    } catch (error) {
+        //throw {"status": 404 , "messege": error.messege}
+        throw {"status": 404, "messege": "pokemon not found"};
+    }
+    // .then((response) => {
+    //     const pokeObj = createPokeObj(response);
+    //     return res.send(pokeObj);
+    // })
+    // .catch((error)=> {
+    //   throw {"status": 404, "messege": "pokemon not found"};
+    // });
 })
 //Pokemon catch
 router.put("/catch/:id", (req, res)=> {
@@ -48,13 +56,14 @@ router.put("/catch/:id", (req, res)=> {
     if(fs.existsSync(usreFolderPath)) {
         const collection = fs.readdirSync(usreFolderPath); //all pokemon collection files
         if (collection.includes(`${id}.json`)){ //Pokemon already caught
-            res.status(403).json({ message: 'Pokemon already caught'});
+            throw {"status": 403, "messege": "Pokemon already caught"};
+            //res.status(403).json({ message: 'Pokemon already caught'});
         }
     } else {
         fs.mkdirSync(`${usreFolderPath}`); //Create new folder for the user
     }
     fs.writeFileSync(`${usreFolderPath}\\${id}.json`, `${JSON.stringify(req.body.pokemon)}`); //Add pokemon file with pokemon obj
-    res.send(true);
+    return res.send(true);
 })
 
 //Delete pokemon from collection
@@ -66,11 +75,11 @@ router.delete("/release/:id", (req, res)=> {
         const collection = fs.readdirSync(usreFolderPath);
         if (collection.includes(`${id}.json`)){
             fs.unlinkSync(`${usreFolderPath}\\${id}.json`); //Delete from collection
-            res.send(true);
+            return res.send(true);
         }
-        res.status(403).json({ message: 'Pokemon is not in your collection'}); //the user exists the pokemon doesn't
+        throw {"status": 403, "messege": "Pokemon is not in your collection"};//the user exists the pokemon doesn't
     }
-    res.status(403).json({ message: 'UserName is not exsists'});//No user No pokemon 
+    throw {"status": 403, "messege": "UserName is not exsists"}; //No user No pokemon 
 })
 
 //create Poke Object from response
