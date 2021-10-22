@@ -7,7 +7,7 @@ const path = require("path");
 const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
 
-//localhost:3000/pokemon 
+//localhost:3000/pokemon/ 
 
 //Get pokemon collection
 router.get("/", (req, res)=> {
@@ -25,7 +25,7 @@ router.get("/", (req, res)=> {
 
 
 //Pokemon information
-router.get("/get/:id", async (req, res)=> {
+router.get("/get/:id", (req, res)=> {
         const id = req.params.id;
         P.getPokemonByName(id)
         .then((response) => {
@@ -35,6 +35,19 @@ router.get("/get/:id", async (req, res)=> {
         .catch((error)=> {
           throw {"status": 404, "messege": "pokemon not found"};
         });
+})
+
+//Pokemon information by quary
+router.get("/query",  (req, res)=> {
+    const pokeName = req.body.query;
+    P.getPokemonByName(pokeName)
+    .then((response) => {
+        const pokeObj = createPokeObj(response);
+        return res.send(pokeObj);
+    })
+    .catch((error)=> {
+      throw {"status": 404, "messege": "pokemon not found"};
+    });
 })
        
 //Pokemon catch
