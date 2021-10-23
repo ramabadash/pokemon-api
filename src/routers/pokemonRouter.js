@@ -40,6 +40,7 @@ router.get("/get/:id", (req, res, next)=> {
 //Pokemon information by quary
 router.get("/query",  (req, res, next)=> {
     const pokeName = req.body.query;
+    console.log(req.body);
     P.getPokemonByName(pokeName)
     .then((response) => {
         const pokeObj = createPokeObj(response);
@@ -47,6 +48,21 @@ router.get("/query",  (req, res, next)=> {
     })
     .catch((error)=> {
         next ({"status": 404, "messege": "pokemon not found"});
+    });
+})
+//get names list by type
+router.get("/type/:type", (req, res, next) => {
+    const type = req.params.type;
+    P.getTypeByName(type)
+    .then((response) => {
+      const namesArray = [];
+      for(const poke of response.pokemon) {
+        namesArray.push(poke.pokemon.name);
+      }
+      res.send(namesArray);
+    })
+    .catch((error) => {
+      next({"status": 404, "messege": "names list not found"})
     });
 })
        
@@ -91,6 +107,7 @@ function createPokeObj (pokeObj) {
         abilitiesArray.push(ability.ability.name);
     }
     const pokedexObj = {
+        "id": pokeObj.id,
         "name": pokeObj.forms[0].name, 
         "height": pokeObj.height,
         "weight": pokeObj.weight,
