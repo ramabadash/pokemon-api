@@ -28,7 +28,7 @@ app.use(errorHandlerMiddleware);
 
 app.use('/', express.static(path.resolve('../front/dist'))); // serve main path as static dir
 app.get('/', function(req, res) { // serve main path as static file
-  res.sendFile(path.resolve('.../front/dist/index.html'))
+  res.sendFile(path.resolve('../front/dist/index.html'))
 });
 
 app.listen(process.env.PORT || port, () => {
