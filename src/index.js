@@ -5,6 +5,7 @@ const port = 3000;
 const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
 const cors = require("cors");
+const path = require("path");
 
 app.use(cors({
     origin: "*"
@@ -25,6 +26,11 @@ app.use('/info', userRouter);
 
 app.use(errorHandlerMiddleware);
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.use('/', express.static(path.resolve('../front/dist'))); // serve main path as static dir
+app.get('/', function(req, res) { // serve main path as static file
+  res.sendFile(path.resolve('.../front/dist/index.html'))
+});
+
+app.listen(process.env.PORT || port, () => {
+    console.log(`Example app listening ....`)
 })
