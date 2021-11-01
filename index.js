@@ -13,10 +13,10 @@ app.use(cors({
 
 app.use(express.json()) // parses requests as json
 
-const pokemonRouter = require("./routers/pokemonRouter");
-const userRouter = require("./routers/userRouter");
-const {errorHandlerMiddleware} = require("./middleware/errorHandler")
-const {userHandler} = require("./middleware/userHandler");
+const pokemonRouter = require("./src/routers/pokemonRouter");
+const userRouter = require("./src/routers/userRouter");
+const {errorHandlerMiddleware} = require("./src/middleware/errorHandler")
+const {userHandler} = require("./src/middleware/userHandler");
 
 
 app.use(userHandler);
