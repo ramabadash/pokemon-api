@@ -18,9 +18,9 @@ const userRouter = require("./src/routers/userRouter");
 const {errorHandlerMiddleware} = require("./src/middleware/errorHandler")
 const {userHandler} = require("./src/middleware/userHandler");
 
-app.use('/', express.static(path.resolve('./front/dist'))); // serve main path as static dir
+app.use('/', express.static(path.resolve('./dist'))); // serve main path as static dir
 app.get('/', function(req, res) { // serve main path as static file
-  res.sendFile(path.resolve('./front/dist/index.html'))
+  res.sendFile(path.resolve('./dist/index.html'))
 });
 
 app.use(userHandler);

@@ -391,8 +391,8 @@ let PokemonObject = {
   name: '',
   height: '',
   weight: '',
-  front_pic: '../img/pokee.png',
-  back_pic: '../img/pokee.png',
+  front_pic: './img/pokee.png',
+  back_pic: './img/pokee.png',
   types: [],
   abilities: [],
 };
