@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 8080;
 
 const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
@@ -13,10 +13,10 @@ app.use(cors({
 
 app.use(express.json()) // parses requests as json
 
-const pokemonRouter = require("./routers/pokemonRouter");
-const userRouter = require("./routers/userRouter");
-const {errorHandlerMiddleware} = require("./middleware/errorHandler")
-const {userHandler} = require("./middleware/userHandler");
+const pokemonRouter = require("./src/routers/pokemonRouter");
+const userRouter = require("./src/routers/userRouter");
+const {errorHandlerMiddleware} = require("./src/middleware/errorHandler")
+const {userHandler} = require("./src/middleware/userHandler");
 
 app.use('/', express.static(path.resolve('../front/dist'))); // serve main path as static dir
 app.get('/', function(req, res) { // serve main path as static file
