@@ -94,7 +94,7 @@ h1 > img {
     color: whitesmoke;
     font-size: 20px;
     height: auto;
-    width: auto;
+    width: fit-content;
     margin: 10px;
     padding: 4px;
     border: black;
@@ -146,11 +146,11 @@ li {
 }
 #name {
     background-color: inherit;
-    font-size: 15px;
+    font-size: 40px;
 }
 #height, #weight{
     background-color: inherit(76, 163, 123);
-    font-size: 15px;
+    font-size: 40px;
 }
 #typeList, #typeListNames { 
     width: 90%;
@@ -174,7 +174,7 @@ li {
 }
 .label {
     background-color: inherit;
-    font-size: 5px;
+    font-size: 25px;
 }
 .abilitiesList {
     width: fit-content;

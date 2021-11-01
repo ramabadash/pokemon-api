@@ -13,11 +13,15 @@ app.use(cors({
 
 app.use(express.json()) // parses requests as json
 
-const pokemonRouter = require("./src/routers/pokemonRouter");
-const userRouter = require("./src/routers/userRouter");
-const {errorHandlerMiddleware} = require("./src/middleware/errorHandler")
-const {userHandler} = require("./src/middleware/userHandler");
+const pokemonRouter = require("./routers/pokemonRouter");
+const userRouter = require("./routers/userRouter");
+const {errorHandlerMiddleware} = require("./middleware/errorHandler")
+const {userHandler} = require("./middleware/userHandler");
 
+app.use('/', express.static(path.resolve('../front/dist'))); // serve main path as static dir
+app.get('/', function(req, res) { // serve main path as static file
+  res.sendFile(path.resolve('../front/dist/index.html'))
+});
 
 app.use(userHandler);
 
@@ -26,10 +30,6 @@ app.use('/info', userRouter);
 
 app.use(errorHandlerMiddleware);
 
-app.use('/', express.static(path.resolve('../front/dist'))); // serve main path as static dir
-app.get('/', function(req, res) { // serve main path as static file
-  res.sendFile(path.resolve('../front/dist/index.html'))
-});
 
 app.listen(process.env.PORT || port, () => {
     console.log(`Example app listening ....`)
