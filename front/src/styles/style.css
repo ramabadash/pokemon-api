@@ -146,9 +146,11 @@ li {
 }
 #name {
     background-color: inherit;
+    font-size: 15px;
 }
 #height, #weight{
     background-color: inherit(76, 163, 123);
+    font-size: 15px;
 }
 #typeList, #typeListNames { 
     width: 90%;
